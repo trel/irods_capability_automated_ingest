@@ -116,7 +116,7 @@ range of possible Unicode characters, we can add a character\_map method that re
 ```
 The returned dictionary, in this case, indicates that the ingest process should replace all non-alphanumeric (as
 well as non-ASCII) characters with an underscore wherever they may occur in an otherwise normally generated logical path.
-The substition process also applies to the intermediate (ie collection name) elements in a logical path, and a suffix is
+The substitution process also applies to the intermediate (ie collection name) elements in a logical path, and a suffix is
 appended to affected path elements to avoid potential collisions with other remapped object names.
 
 Each key of the returned dictionary indicates a character or set of characters needing substitution.
@@ -153,13 +153,15 @@ unmodified vault path.
 Additionally, data objects that have had their names remapped, whether pro forma or via a UnicodeEncodeError, will be
 annotated with an AVU of the form
 
-   Attribute:	"irods::automated_ingest::" + ANNOTATION_REASON
-   Value:	A PREFIX plus the base64-converted "bad filepath"
-   Units:	"python3.base64.b64encode(full_path_of_source_file)"
+```
+    Attribute: "irods::automated_ingest::" + ANNOTATION_REASON
+    Value:     A PREFIX plus the base64-converted "bad filepath"
+    Units:     "python3.base64.b64encode(full_path_of_source_file)"
+```
 
 Where :
-   - ANNOTATION_REASON is either "UnicodeEncodeError" or "character\_map" depending on why the remapping occurred.
-   - PREFIX is either "irods_UnicodeEncodeError\_" or blank(""), again depending on the re-mapping cause.
+   - `ANNOTATION_REASON` is either "UnicodeEncodeError" or "character\_map" depending on why the remapping occurred.
+   - `PREFIX` is either "irods_UnicodeEncodeError\_" or blank(""), again depending on the re-mapping cause.
 
 Note that the UnicodeEncodeError type of remapping is unconditional, whereas the character remapping is contingent on
 an event handler's character_map method being defined.  Also, if a UnicodeEncodeError-style ingest is performed on a
